@@ -18,16 +18,16 @@ public interface IAbility
     void Use(GameObject currentGameObject);
 }
 
-public class DelayDecorator : IAbility
+public abstract class BaseAbilitySO: ScriptableObject, IAbility
 {
-    private IAbility wrapperAbility;
+    public abstract void Use(GameObject currentGameObject);
+}
 
-    public DelayDecorator(IAbility wrappedAbility)
-    {
-        this.wrapperAbility = wrappedAbility;
-    }
+public class DelayDecorator : BaseAbilitySO
+{
+    [SerializeField] BaseAbilitySO wrapperAbility;
 
-    public void Use(GameObject currentGameObject)
+    public override void Use(GameObject currentGameObject)
     {
         // TODO some delaying functionality
         wrapperAbility.Use(currentGameObject);
@@ -35,25 +35,25 @@ public class DelayDecorator : IAbility
     }
 }
 
-public class RageAbility : IAbility
+public class RageAbility : BaseAbilitySO
 {
-    public void Use(GameObject currentGameObject)
+    public override void Use(GameObject currentGameObject)
     {
         Debug.Log("I'm always angry");
     }
 }
 
-public class HealAbility : IAbility
+public class HealAbility : BaseAbilitySO
 {
-    public void Use(GameObject currentGameObject)
+    public override void Use(GameObject currentGameObject)
     {
         Debug.Log("Here eat this!");
     }
 }
 
-public class FireBallAbility : IAbility
+public class FireBallAbility : BaseAbilitySO
 {
-    public void Use(GameObject currentGameObject)
+    public override void Use(GameObject currentGameObject)
     {
         Debug.Log("Casting FireBall!");
     }
