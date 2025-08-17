@@ -3,7 +3,7 @@ using UnityEngine;
 public class AbilityRunner : MonoBehaviour
 {
 
-    [SerializeField] private IAbility currentAbility =
+    [SerializeField] private BaseAbilitySO currentAbility =
     new DelayDecorator(new RageAbility());
 
     public void UseAbility()
@@ -26,6 +26,11 @@ public abstract class BaseAbilitySO: ScriptableObject, IAbility
 public class DelayDecorator : BaseAbilitySO
 {
     [SerializeField] BaseAbilitySO wrapperAbility;
+
+    public DelayDecorator(BaseAbilitySO ability)
+    {
+        this.wrapperAbility = ability;
+    }
 
     public override void Use(GameObject currentGameObject)
     {
