@@ -3,18 +3,36 @@ using UnityEngine;
 public class AbilityRunner : MonoBehaviour
 {
 
-    [SerializeField] private IAbility currentAbility = new RageAbility();
+    [SerializeField] private IAbility currentAbility =
+    new DelayDecorator(new RageAbility());
 
     public void UseAbility()
     {
 
-        currentAbility.Use();
+        currentAbility.Use(gameObject);
     }
 }
 
 public interface IAbility
 {
     void Use(GameObject currentGameObject);
+}
+
+public class DelayDecorator : IAbility
+{
+    private IAbility wrapperAbility;
+
+    public DelayDecorator(IAbility wrappedAbility)
+    {
+        this.wrapperAbility = wrappedAbility;
+    }
+
+    public void Use(GameObject currentGameObject)
+    {
+        // TODO some delaying functionality
+        wrapperAbility.Use(currentGameObject);
+
+    }
 }
 
 public class RageAbility : IAbility
